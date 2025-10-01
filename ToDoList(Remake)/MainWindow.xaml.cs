@@ -33,7 +33,7 @@ namespace ToDoList_Remake_
         {
             if (string.IsNullOrWhiteSpace(NewToDoTextBox.Text))
             {
-                MessageBox.Show("Please enter a task name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Добавьте название .", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -52,6 +52,18 @@ namespace ToDoList_Remake_
             CategoryComboBox.SelectedIndex = 0;
             DueDatePicker.SelectedDate = DateTime.Today;
 
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgToDoApp.SelectedItem is ToDo selectedTodo)
+            {
+                todos.AllTodos.Remove(selectedTodo);
+            }
+            else
+            {
+                MessageBox.Show("Выбирайте что-то, чтобы удалять", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }
