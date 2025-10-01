@@ -5,27 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ToDoList_Remake_"
         mc:Ignorable="d"
-        Title="ToDoList" Height="450" Width="800">
+        Title="ToDoList" Height="450" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition  Height="*"/>
-
             <RowDefinition  Height="auto"/>
         </Grid.RowDefinitions>
 
-        <ListView Grid.Row="0" ItemsSource="{Binding AllTodos}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox IsChecked="{Binding IsDone}" Content="{Binding Name}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            
-        </ListView>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <TextBox x:Name="NewToDoTextBox" Width="150" Margin="10"/>
-            <Button Content="Add" Click="AddButton_clicked" Margin="10" />
+        <DataGrid x:Name="dgToDoApp" 
+                  Grid.Row="0" 
+                  ItemsSource="{Binding AllTodos}" 
+                  FontSize="14" 
+                  FontWeight="Normal" 
+                  Margin="10" 
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="false"  Header="Задача" Width="400"/>
+                <DataGridTextColumn Binding="{Binding Path=Priority}" IsReadOnly="false" Header="Приоритет" Width="100"/>
+                <DataGridTextColumn Binding="{Binding Path=Category}" IsReadOnly="false" Header="Категория" Width="100"/>
+                <DataGridTextColumn Binding="{Binding Path=DueDate, StringFormat='dd/MM/yyyy'}" IsReadOnly="false" Header="Срок выполнения" Width="200"/>
+                <DataGridCheckBoxColumn Binding="{Binding Path=IsDone, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="false" Header="Выполнена ли она" Width="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <TextBox x:Name="NewToDoTextBox" Width="300" Margin="5"/>
+            <ComboBox x:Name="PriorityComboBox" Width="80" Margin="5" SelectedIndex="2">
+                <ComboBoxItem>1</ComboBoxItem>
+                <ComboBoxItem>2</ComboBoxItem>
+                <ComboBoxItem>3</ComboBoxItem>
+                <ComboBoxItem>4</ComboBoxItem>
+                <ComboBoxItem>5</ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="CategoryComboBox" Width="100" Margin="5" SelectedIndex="0">
+                <ComboBoxItem>Работа</ComboBoxItem>
+                <ComboBoxItem>Домашняя</ComboBoxItem>
+                <ComboBoxItem>Учеба</ComboBoxItem>
+                <ComboBoxItem>Семейная</ComboBoxItem>
+                <ComboBoxItem>Другие</ComboBoxItem>
+            </ComboBox>
+            <DatePicker x:Name="DueDatePicker" Width="120" Margin="5"/>
+            <Button Content="Добавлять" Click="AddButton_clicked" Margin="5" Padding="10,5"/>
         </StackPanel>
-        
+
+
+
+
+
+
     </Grid>
 </Window>

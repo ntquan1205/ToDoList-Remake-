@@ -26,15 +26,31 @@ namespace ToDoList_Remake_
             InitializeComponent();
             todos = new Todos();
             DataContext = todos;
+            DueDatePicker.SelectedDate = DateTime.Today;
         }
 
         private void AddButton_clicked(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(NewToDoTextBox.Text))
+            {
+                MessageBox.Show("Please enter a task name.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             ToDo todo = new ToDo()
             {
-                Name = NewToDoTextBox.Text
+                Name = NewToDoTextBox.Text,
+                Priority = int.Parse((PriorityComboBox.SelectedItem as ComboBoxItem).Content.ToString()),
+                Category = (Category)CategoryComboBox.SelectedIndex,
+                DueDate = DueDatePicker.SelectedDate ?? DateTime.Today
             };
+
             todos.AllTodos.Add(todo);
+
+            NewToDoTextBox.Clear();
+            PriorityComboBox.SelectedIndex = 2;
+            CategoryComboBox.SelectedIndex = 0;
+            DueDatePicker.SelectedDate = DateTime.Today;
 
         }
     }
