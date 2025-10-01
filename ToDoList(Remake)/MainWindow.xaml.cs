@@ -20,9 +20,22 @@ namespace ToDoList_Remake_
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Todos todos;
         public MainWindow()
         {
             InitializeComponent();
+            todos = new Todos();
+            DataContext = todos;
+        }
+
+        private void AddButton_clicked(object sender, RoutedEventArgs e)
+        {
+            ToDo todo = new ToDo()
+            {
+                Name = NewToDoTextBox.Text
+            };
+            todos.AllTodos.Add(todo);
+
         }
     }
 }
