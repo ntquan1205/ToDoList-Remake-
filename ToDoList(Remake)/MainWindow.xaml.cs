@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +66,61 @@ namespace ToDoList_Remake_
             {
                 MessageBox.Show("Выбирайте что-то, чтобы удалять", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void dgToDoApp_Sorting(object sender, DataGridSortingEventArgs e)
+        {
+            e.Handled = true; 
+            string columnName = e.Column.Header.ToString();
+            ListSortDirection direction = ListSortDirection.Ascending;
+            switch (columnName)
+            {
+                case "Задача":
+                    if (direction == ListSortDirection.Ascending)
+                        todos.SortByName();
+                    else
+                        todos.SortByNameDescending();
+                    break;
+
+                case "Приоритет":
+                    if (direction == ListSortDirection.Ascending)
+                        todos.SortByPriority();
+                    else
+                        todos.SortByPriorityDescending();
+                    break;
+
+                case "Категория":
+                    if (direction == ListSortDirection.Ascending)
+                        todos.SortByCategory();
+                    else
+                        todos.SortByCategoryDescending();
+                    break;
+
+                case "Срок выполнения":
+                    if (direction == ListSortDirection.Ascending)
+                        todos.SortByDueDate();
+                    else
+                        todos.SortByDueDateDescending();
+                    break;
+
+                case "Выполнена ли она":
+                    if (direction == ListSortDirection.Ascending)
+                        todos.SortByIsDone();
+                    else
+                        todos.SortByIsDoneDescending();
+                    break;
+            }
+
+            e.Column.SortDirection = direction;
+
+            foreach (var column in dgToDoApp.Columns)
+            {
+                if (column != e.Column)
+                    column.SortDirection = null;
+            }
+        }
+        private void dgToDoApp_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
         }
     }
 }

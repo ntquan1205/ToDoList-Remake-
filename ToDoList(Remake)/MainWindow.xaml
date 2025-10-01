@@ -19,7 +19,7 @@
                   FontWeight="Normal" 
                   Margin="10" 
                   AutoGenerateColumns="False"
-                  CanUserAddRows="False">
+                  CanUserAddRows="False" SelectionChanged="dgToDoApp_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="false"  Header="Задача" Width="400"/>
                 <DataGridTextColumn Binding="{Binding Path=Priority}" IsReadOnly="false" Header="Приоритет" Width="100"/>
@@ -48,6 +48,7 @@
             <DatePicker x:Name="DueDatePicker" Width="120" Margin="5"/>
             <Button Content="Добавлять" Click="AddButton_clicked" Margin="5" Padding="10,5"/>
             <Button Content="Удалять" Click="DeleteButton_Click" Margin="5" Padding="10,5"/>
+        
         </StackPanel>
     </Grid>
 </Window>
