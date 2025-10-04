@@ -31,8 +31,8 @@ namespace ToDoList_Remake_
         public MainWindow()
         {
             InitializeComponent();
-            _fileIOServices = new FileIOServices(PATH);
 
+            _fileIOServices = new FileIOServices(PATH);
             todos = new Todos();
 
             var loadedData = _fileIOServices.LoadData();
@@ -43,6 +43,8 @@ namespace ToDoList_Remake_
 
             DataContext = todos;
             DueDatePicker.SelectedDate = DateTime.Today;
+
+            FilterComboBox.SelectedIndex = 0;
         }
 
         private void AddButton_clicked(object sender, RoutedEventArgs e)
@@ -88,6 +90,15 @@ namespace ToDoList_Remake_
             _fileIOServices.SaveData(todos.AllTodos);
         }
 
+        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Добавляем проверку на null
+            if (todos != null && FilterComboBox.SelectedItem is ComboBoxItem selectedItem)
+            {
+                string filter = selectedItem.Tag?.ToString();
+                todos.ApplyFilter(filter);
+            }
+        }
         private void dgToDoApp_Sorting(object sender, DataGridSortingEventArgs e)
         {
             e.Handled = true; 
