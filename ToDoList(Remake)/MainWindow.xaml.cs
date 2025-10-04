@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ToDoList_Remake_.Services;
 
 namespace ToDoList_Remake_
 {
@@ -23,10 +25,22 @@ namespace ToDoList_Remake_
     public partial class MainWindow : Window
     {
         private Todos todos;
+        private readonly string PATH = $"{Environment.CurrentDirectory}\\todoData.json";
+        private FileIOServices _fileIOServices;
+
         public MainWindow()
         {
             InitializeComponent();
+            _fileIOServices = new FileIOServices(PATH);
+
             todos = new Todos();
+
+            var loadedData = _fileIOServices.LoadData();
+            if (loadedData != null)
+            {
+                todos.AllTodos = loadedData;
+            }
+
             DataContext = todos;
             DueDatePicker.SelectedDate = DateTime.Today;
         }
@@ -61,11 +75,17 @@ namespace ToDoList_Remake_
             if (dgToDoApp.SelectedItem is ToDo selectedTodo)
             {
                 todos.AllTodos.Remove(selectedTodo);
+                SaveData();
             }
             else
             {
                 MessageBox.Show("Выбирайте что-то, чтобы удалять", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void SaveData()
+        {
+            _fileIOServices.SaveData(todos.AllTodos);
         }
 
         private void dgToDoApp_Sorting(object sender, DataGridSortingEventArgs e)

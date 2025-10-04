@@ -58,6 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\FileIOServices.cs" />
     <Compile Include="ToDo.cs" />
     <Compile Include="Todos.cs" />
     <Page Include="MainWindow.xaml">

@@ -5,16 +5,30 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToDoList_Remake_.Services;
 
 namespace ToDoList_Remake_
 {
     public class Todos : INotifyPropertyChanged
     {
+        private readonly string PATH = $"{Environment.CurrentDirectory}\\todoData.json";
+        private FileIOServices _fileIOServices;
         public Todos() 
         {
-            _allTodos = new ObservableCollection<ToDo>()
+            _fileIOServices = new FileIOServices(PATH);
+            _allTodos = _fileIOServices.LoadData();
+
+            _allTodos.CollectionChanged += (s, e) => SaveData();
+
+            foreach (var todo in _allTodos)
             {
-            };
+                todo.PropertyChanged += Todo_PropertyChanged;
+            }
+        }
+
+        private void Todo_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SaveData();
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,9 +42,32 @@ namespace ToDoList_Remake_
             get { return _allTodos; }
             set
             {
+                if (_allTodos != null)
+                {
+                    _allTodos.CollectionChanged -= (s, e) => SaveData();
+                    foreach (var todo in _allTodos)
+                    {
+                        todo.PropertyChanged -= Todo_PropertyChanged;
+                    }
+                }
                 _allTodos = value;
+
+                if (_allTodos != null)
+                {
+                    _allTodos.CollectionChanged += (s, e) => SaveData();
+                    foreach (var todo in _allTodos)
+                    {
+                        todo.PropertyChanged += Todo_PropertyChanged;
+                    }
+                }
                 OnPropertyChanged(nameof(AllTodos));
+                SaveData();
             }
+        }
+
+        private void SaveData()
+        {
+            _fileIOServices.SaveData(_allTodos);
         }
 
         public void SortByName()
